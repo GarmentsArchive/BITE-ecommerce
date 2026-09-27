@@ -1,0 +1,1015 @@
+/* ─────────────────────────────────────────────────────────────
+   BITE — Editorial Spread System
+
+   Every spread is a 12-column grid. Variants differ by WHERE the
+   image and the copy are placed in that grid — not by ad-hoc
+   absolute positioning. This keeps the compositions genuinely
+   different while staying responsive and predictable.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-section {
+  background-color: var(--bite-ivory);
+  color: var(--bite-black);
+}
+
+.editorial-spread {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--space-md);
+  row-gap: var(--space-lg);
+  align-items: center;
+  position: relative;
+  padding: var(--space-2xl) var(--space-page);
+  overflow: clip;
+}
+
+/* Keep the reader moving. A spread is a page, not a chapter. */
+.editorial-spread--tall { min-height: 92vh; }
+
+/* ── Shared spread parts ───────────────────────────────────── */
+
+.editorial-spread__image-wrap {
+  position: relative;
+  grid-row: 1;
+  overflow: hidden;
+  background-color: var(--bite-ivory-dark);
+}
+
+.editorial-spread__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.editorial-spread__image.loaded { opacity: 1; }
+
+.editorial-spread__content {
+  position: relative;
+  z-index: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.editorial-spread__index {
+  font-family: var(--font-display);
+  font-size: var(--type-number);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: var(--bite-border);
+  margin-bottom: var(--space-sm);
+  user-select: none;
+}
+
+.editorial-spread__category {
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  line-height: 1.7;
+  color: var(--bite-caption);
+  margin-bottom: var(--space-sm);
+  white-space: pre-line;
+}
+
+.editorial-spread__title {
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+  margin-bottom: var(--space-xs);
+}
+
+.editorial-spread__subtitle {
+  font-family: var(--font-editorial);
+  font-size: var(--type-subhead);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--bite-caption);
+  margin-bottom: var(--space-md);
+}
+
+.editorial-spread__description {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.65;
+  max-width: 38ch;
+  margin-bottom: var(--space-md);
+}
+
+.editorial-spread__footer {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.editorial-spread__price {
+  font-family: var(--font-body);
+  font-size: var(--type-subhead);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Editorial CTA — a rule and a word, not a pill. */
+.editorial-spread__cta {
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  color: inherit;
+  padding: 0.7em 0;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              letter-spacing var(--duration-normal) var(--ease-out);
+}
+
+.editorial-spread__cta:hover {
+  color: var(--bite-cherry);
+  border-color: var(--bite-cherry);
+  letter-spacing: 0.2em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 01 — center-offset
+   Image held in the middle. Copy sits left and overlaps its edge.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--center-offset .editorial-spread__image-wrap {
+  grid-column: 4 / 11;
+  aspect-ratio: 4 / 5;
+}
+
+.editorial-spread--center-offset .editorial-spread__content {
+  grid-column: 1 / 5;
+  justify-self: start;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 02 — right-heavy
+   Image bleeds off the right edge. Oversized numeral anchors left.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--right-heavy .editorial-spread__image-wrap {
+  grid-column: 6 / 13;
+  aspect-ratio: 1 / 1;
+  margin-right: calc(-1 * var(--space-page));
+}
+
+.editorial-spread--right-heavy .editorial-spread__content {
+  grid-column: 1 / 6;
+}
+
+.editorial-spread--right-heavy .editorial-spread__index {
+  font-size: clamp(90px, 13vw, 210px);
+  color: var(--bite-cherry);
+  opacity: 0.16;
+  margin-bottom: var(--space-md);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 03 — full-bleed
+   The section itself goes burgundy. Image centered, copy beneath.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--full-bleed {
+  background-color: var(--bite-deep-red);
+  color: var(--bite-white);
+  row-gap: var(--space-md);
+  /* Picture and copy have to share one viewport, so this spread
+     runs tighter than the ivory ones. */
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+
+.editorial-spread--full-bleed .editorial-spread__image-wrap {
+  grid-column: 2 / 12;
+  grid-row: 1;
+  /* A cinematic letterbox — it reads as a film still, which suits
+     the spreads that carry video. */
+  aspect-ratio: 21 / 9;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.editorial-spread--full-bleed .editorial-spread__content {
+  grid-column: 4 / 10;
+  grid-row: 2;
+  align-items: center;
+  text-align: center;
+}
+
+.editorial-spread--full-bleed .editorial-spread__index,
+.editorial-spread--full-bleed .editorial-spread__category,
+.editorial-spread--full-bleed .editorial-spread__subtitle {
+  color: rgba(254, 252, 249, 0.55);
+}
+
+.editorial-spread--full-bleed .editorial-spread__description {
+  max-width: 44ch;
+  margin-bottom: var(--space-sm);
+}
+
+.editorial-spread--full-bleed .editorial-spread__index {
+  font-size: var(--type-heading);
+  margin-bottom: var(--space-xs);
+}
+
+.editorial-spread--full-bleed .editorial-spread__title {
+  font-size: var(--type-heading);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 04 — minimal
+   Warm ivory, a small picture, and a great deal of nothing.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--minimal {
+  background-color: var(--bite-ivory-light);
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.editorial-spread--minimal .editorial-spread__image-wrap {
+  grid-column: 2 / 6;
+  aspect-ratio: 3 / 4;
+}
+
+.editorial-spread--minimal .editorial-spread__content {
+  grid-column: 8 / 12;
+}
+
+.editorial-spread--minimal .editorial-spread__title {
+  font-size: var(--type-heading);
+}
+
+.editorial-spread--minimal .editorial-spread__description {
+  font-family: var(--font-editorial);
+  font-size: var(--type-subhead);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.45;
+  max-width: 26ch;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 05 — asymmetric
+   Hard vertical crop, pushed off the left edge, copy dropped low.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--asymmetric {
+  align-items: stretch;
+}
+
+.editorial-spread--asymmetric .editorial-spread__image-wrap {
+  grid-column: 1 / 8;
+  aspect-ratio: 16 / 11;
+  margin-left: calc(-1 * var(--space-page));
+}
+
+.editorial-spread--asymmetric .editorial-spread__image {
+  object-position: 50% 30%;
+}
+
+.editorial-spread--asymmetric .editorial-spread__content {
+  grid-column: 9 / 13;
+  justify-content: flex-end;
+  padding-bottom: var(--space-lg);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 06 — type-behind
+   The shade name set enormous, sitting behind the photograph.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--type-behind {
+  --backdrop-size: clamp(110px, 21vw, 320px);
+  align-items: center;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.editorial-spread__backdrop {
+  grid-column: 1 / 13;
+  grid-row: 1;
+  justify-self: center;
+  align-self: center;
+  font-family: var(--font-display);
+  font-size: var(--backdrop-size);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--bite-ivory-dark);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.editorial-spread--type-behind .editorial-spread__image-wrap {
+  grid-column: 5 / 10;
+  grid-row: 1;
+  aspect-ratio: 3 / 4;
+  z-index: 1;
+}
+
+.editorial-spread--type-behind .editorial-spread__content {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  z-index: 2;
+}
+
+.editorial-spread--type-behind .editorial-spread__title {
+  /* The name is already set huge behind the image. */
+  font-size: var(--type-heading);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VARIANT 07 — reverse
+   Mirror of the opening spread, to close the sequence.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread--reverse .editorial-spread__image-wrap {
+  grid-column: 1 / 8;
+  aspect-ratio: 5 / 4;
+  margin-left: calc(-1 * var(--space-page));
+}
+
+.editorial-spread--reverse .editorial-spread__content {
+  grid-column: 8 / 13;
+  align-items: flex-start;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Motion — spreads settle rather than fly in.
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread__content > *,
+.editorial-spread__backdrop {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-spread__image { opacity: 1; transition: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Media inside a spread's picture frame
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-spread__frames {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.editorial-spread__frames.is-ready { opacity: 1; }
+
+.frame-sequence__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.editorial-spread__video {
+  /* inherits sizing from .editorial-spread__image */
+  background-color: var(--bite-ivory-dark);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Pinned frame sequence — a held moment between spreads
+   ───────────────────────────────────────────────────────────── */
+
+.frame-sequence {
+  position: relative;
+  width: 100%;
+  background-color: var(--bite-black);
+}
+
+.frame-sequence__stage {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+}
+
+.frame-sequence.is-ready .frame-sequence__stage { opacity: 1; }
+
+.frame-sequence__caption {
+  position: absolute;
+  left: var(--space-page);
+  bottom: var(--space-lg);
+  z-index: 2;
+  color: var(--bite-white);
+  mix-blend-mode: difference;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Editorial → Collection
+   The reader has reached the shopping pages of the magazine.
+   ───────────────────────────────────────────────────────────── */
+
+.collection-transition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-3xl) var(--space-page);
+  background-color: var(--bite-cherry);
+  color: var(--bite-white);
+}
+
+.collection-transition__rule {
+  width: 1px;
+  height: var(--space-2xl);
+  background-color: rgba(254, 252, 249, 0.4);
+  margin-bottom: var(--space-lg);
+}
+
+.collection-transition__eyebrow {
+  color: rgba(254, 252, 249, 0.6);
+  margin-bottom: var(--space-md);
+}
+
+.collection-transition__title {
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  margin-bottom: var(--space-sm);
+}
+
+.collection-transition__meta {
+  color: rgba(254, 252, 249, 0.7);
+  margin-bottom: var(--space-lg);
+}
+
+.collection-transition__cta {
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  color: var(--bite-white);
+  border: 1px solid rgba(254, 252, 249, 0.5);
+  padding: 1.1em 2.4em;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.collection-transition__cta:hover {
+  background-color: var(--bite-white);
+  border-color: var(--bite-white);
+  color: var(--bite-cherry);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Editorial masthead
+   ───────────────────────────────────────────────────────────── */
+
+.editorial-masthead {
+  padding: calc(var(--nav-height) + var(--space-2xl)) var(--space-page) var(--space-2xl);
+  background-color: var(--bite-ivory);
+  border-bottom: 1px solid var(--bite-border);
+}
+
+.editorial-masthead__meta {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.editorial-masthead__title {
+  font-family: var(--font-display);
+  font-size: var(--type-hero);
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.025em;
+  margin-bottom: var(--space-md);
+}
+
+.editorial-masthead__standfirst {
+  font-family: var(--font-editorial);
+  font-size: var(--type-subhead);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--bite-caption);
+  max-width: 34ch;
+}
+
+.frame-sequence-host { display: block; }
+
+/* ─────────────────────────────────────────────────────────────
+   Home — the collection grid under the plate
+   ───────────────────────────────────────────────────────────── */
+
+.home-collection { background-color: var(--bite-ivory-light); }
+
+.home-collection__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--bite-border);
+}
+
+.home-collection__all {
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.3em;
+  transition: color var(--duration-fast) var(--ease-out),
+              letter-spacing var(--duration-normal) var(--ease-out);
+}
+
+.home-collection__all:hover {
+  color: var(--bite-cherry);
+  letter-spacing: 0.2em;
+}
+
+/* The featured row is a plain four-up; the editorial rhythm lives
+   on the store page, not here. */
+.product-grid--featured {
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0;
+  background: none;
+}
+
+@media (max-width: 1024px) {
+  .product-grid--featured { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .product-grid--featured { grid-template-columns: 1fr; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   PRINT FURNITURE
+   The small marks that make a page read as a publication:
+   a shade rule, a kicker, a folio.
+   ═════════════════════════════════════════════════════════════ */
+
+/* A bar of the product's own colour opens every spread. */
+.editorial-spread__swatch {
+  display: block;
+  width: 52px;
+  height: 3px;
+  background-color: var(--spread-swatch, var(--bite-cherry));
+  margin-bottom: var(--space-sm);
+}
+
+.editorial-spread__kicker {
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--bite-caption);
+  margin-bottom: var(--space-xs);
+}
+
+.editorial-spread__folio {
+  grid-column: 1 / 13;
+  align-self: end;
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--bite-caption);
+  opacity: 0.7;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--bite-border);
+}
+
+.editorial-spread--full-bleed .editorial-spread__kicker,
+.editorial-spread--full-bleed .editorial-spread__folio {
+  color: rgba(254, 252, 249, 0.55);
+  border-color: rgba(254, 252, 249, 0.2);
+}
+
+/* ═════════════════════════════════════════════════════════════
+   NEWSPAPER TYPESETTING
+   Columns with hairline rules, a drop cap, a pull quote that
+   breaks the measure, and ingredient marginalia as texture.
+   ═════════════════════════════════════════════════════════════ */
+
+.editorial-spread__body {
+  margin-bottom: var(--space-md);
+  column-gap: var(--space-md);
+  column-rule: 1px solid var(--bite-border);
+}
+
+.editorial-spread__body--cols-2 { column-count: 2; }
+.editorial-spread__body--cols-3 { column-count: 3; }
+
+.editorial-spread__standfirst {
+  font-family: var(--font-editorial);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.62;
+  font-weight: 300;
+  /* Justified with hyphenation — the newsprint texture. */
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  margin: 0;
+}
+
+.editorial-spread__standfirst.has-drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 3.15em;
+  line-height: 0.76;
+  padding-right: 0.09em;
+  margin-top: 0.06em;
+  color: var(--spread-swatch, var(--bite-cherry));
+}
+
+.editorial-spread__pull {
+  column-span: all;
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(22px, 2.6vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-align: center;
+  margin: var(--space-md) 0 0;
+  padding: var(--space-md) 0 0;
+  border-top: 1px solid var(--bite-border);
+}
+
+.editorial-spread--full-bleed .editorial-spread__pull { border-color: rgba(254, 252, 249, 0.25); }
+
+/* The INCI list, set small — chemistry as texture, the way a
+   beauty title prints it. */
+.editorial-spread__marginalia {
+  font-family: var(--font-body);
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bite-caption);
+  max-width: 62ch;
+  margin-bottom: var(--space-md);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--bite-border);
+}
+
+/* ═════════════════════════════════════════════════════════════
+   PLATES
+   Groups of product-in-hand shots. Diptych, triptych and contact
+   sheets run as a band under the composition; single and inset
+   sit inside it.
+   ═════════════════════════════════════════════════════════════ */
+
+.plate {
+  grid-column: 1 / 13;
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.plate__frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: var(--bite-ivory-dark);
+}
+
+.plate__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.plate__item:hover .plate__image { transform: scale(1.03); }
+
+.plate__caption {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: var(--type-small);
+  line-height: 1.4;
+  color: var(--bite-caption);
+  margin-top: var(--space-xs);
+}
+
+.plate__fig {
+  display: block;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--spread-swatch, var(--bite-cherry));
+  margin-bottom: 2px;
+}
+
+.editorial-spread--full-bleed .plate__caption { color: rgba(254, 252, 249, 0.6); }
+
+/* ── Diptych — unequal widths, hung from a shared baseline ──── */
+.plate--diptych {
+  grid-template-columns: 1.7fr 1fr;
+  align-items: end;
+}
+.plate--diptych .plate__item:first-child .plate__frame { aspect-ratio: 4 / 3; }
+.plate--diptych .plate__item:last-child  .plate__frame { aspect-ratio: 3 / 4; }
+
+/* ── Triptych — three from a common top rule, centre one taller ── */
+.plate--triptych {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+  border-top: 1px solid var(--bite-border);
+  padding-top: var(--space-sm);
+}
+.plate--triptych .plate__item:nth-child(2) .plate__frame { aspect-ratio: 3 / 4.5; }
+
+/* ── Contact sheet — tight crops, hairline gutters ──────────── */
+.plate--contact {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background-color: var(--bite-border);
+  padding: 3px;
+}
+.plate--contact .plate__frame { aspect-ratio: 1; }
+.plate--contact .plate__caption {
+  background-color: var(--bite-ivory);
+  margin-top: 0;
+  padding: 6px 8px 8px;
+}
+
+/* ── Single — a small marginal plate, not a second hero ─────── */
+.plate--single {
+  grid-column: 1 / 4;
+  max-width: 220px;
+}
+
+.editorial-spread--full-bleed .plate--single {
+  grid-column: 5 / 9;
+  justify-self: center;
+}
+
+/* ── Inset — floated into the copy, text flowing around it ──── */
+.plate__item--inset {
+  float: right;
+  width: 40%;
+  max-width: 300px;
+  margin: 0.35em 0 var(--space-sm) var(--space-md);
+  /* The angled edge is what separates this from a plain float:
+     the measure actually follows the shape. */
+  shape-outside: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+  shape-margin: 14px;
+}
+
+.plate__item--inset .plate__frame {
+  aspect-ratio: 3 / 4;
+  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ═════════════════════════════════════════════════════════════
+   DENSITY
+   A dense spread needs measure, so the picture yields columns.
+   A sparse spread needs air, so it gets more padding and less
+   of everything else.
+   ═════════════════════════════════════════════════════════════ */
+
+.editorial-spread--sparse {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.editorial-spread--dense.editorial-spread--center-offset .editorial-spread__image-wrap { grid-column: 8 / 13; }
+.editorial-spread--dense.editorial-spread--center-offset .editorial-spread__content    { grid-column: 1 / 8; }
+
+.editorial-spread--dense.editorial-spread--asymmetric .editorial-spread__image-wrap { grid-column: 1 / 6; }
+.editorial-spread--dense.editorial-spread--asymmetric .editorial-spread__content    { grid-column: 6 / 13; }
+
+.editorial-spread--dense.editorial-spread--full-bleed .editorial-spread__content { grid-column: 2 / 12; }
+.editorial-spread--dense.editorial-spread--full-bleed .editorial-spread__standfirst { text-align: left; }
+
+/* ═════════════════════════════════════════════════════════════
+   MOTION
+   Backgrounds cross-fade between spreads and the type settles in.
+   Nothing loops; nothing bounces.
+   ═════════════════════════════════════════════════════════════ */
+
+.editorial-spread__content > * {
+  will-change: transform, opacity;
+}
+
+.editorial-section { transition: background-color 0.9s var(--ease-in-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-spread__image { opacity: 1; transition: none; }
+  .editorial-section { transition: none; }
+  .plate__image { transition: none; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE
+   Each variant is re-composed, not collapsed. The seven layouts
+   stay distinguishable on a phone — that is the whole point of
+   having seven.
+   ═════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .editorial-spread {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-md);
+    padding: var(--space-xl) var(--space-page);
+    min-height: 0;
+  }
+
+  .editorial-spread--tall { min-height: 0; }
+
+  .editorial-spread__image-wrap,
+  .editorial-spread__content,
+  .plate,
+  .editorial-spread__folio {
+    grid-column: 1 !important;
+  }
+
+  .editorial-spread__image-wrap { grid-row: 1; aspect-ratio: 4 / 5; }
+  .editorial-spread__content    { grid-row: 2; }
+
+  .editorial-spread__index { font-size: clamp(48px, 16vw, 96px) !important; }
+
+  /* Columns cannot survive a 375px measure. */
+  .editorial-spread__body--cols-2,
+  .editorial-spread__body--cols-3 { column-count: 1; }
+
+  .editorial-spread__standfirst { text-align: left; }
+
+  .editorial-spread__pull { text-align: left; font-size: clamp(20px, 6vw, 28px); }
+
+  /* Plates stay multi-image — that is what makes them plates. */
+  .plate--triptych { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .plate--triptych .plate__caption { display: none; }
+  .plate--diptych  { grid-template-columns: 1.4fr 1fr; }
+  .plate--contact  { grid-template-columns: repeat(3, 1fr); }
+  .plate--single   { max-width: 150px; }
+
+  /* An inset at 40% of a phone leaves an unreadable 3-word measure. */
+  .plate__item--inset {
+    float: none;
+    width: 62%;
+    max-width: none;
+    margin: 0 0 var(--space-sm) 0;
+    shape-outside: none;
+  }
+
+  /* ── 01 center-offset — picture, then copy. The plain one. ── */
+
+  /* ── 02/08 right-heavy — numeral rides over the picture ───── */
+  .editorial-spread--right-heavy .editorial-spread__image-wrap {
+    margin-left: calc(-1 * var(--space-page));
+    margin-right: calc(-1 * var(--space-page));
+    aspect-ratio: 1;
+  }
+  .editorial-spread--right-heavy .editorial-spread__index {
+    margin-top: calc(-0.42em - var(--space-md));
+    position: relative;
+    color: var(--spread-swatch, var(--bite-cherry));
+    opacity: 0.9;
+  }
+
+  /* ── 03/09 full-bleed — edge to edge, copy centred on burgundy ── */
+  .editorial-spread--full-bleed {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .editorial-spread--full-bleed .editorial-spread__image-wrap {
+    aspect-ratio: 4 / 5;
+  }
+  .editorial-spread--full-bleed .editorial-spread__content {
+    align-items: center;
+    text-align: center;
+    padding: 0 var(--space-page);
+  }
+  .editorial-spread--full-bleed .plate,
+  .editorial-spread--full-bleed .editorial-spread__folio {
+    padding: 0 var(--space-page);
+  }
+
+  /* ── 04 minimal — a small picture and a lot of nothing ────── */
+  .editorial-spread--minimal {
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-3xl);
+  }
+  .editorial-spread--minimal .editorial-spread__image-wrap {
+    width: 62%;
+    justify-self: center;
+    aspect-ratio: 3 / 4;
+  }
+  .editorial-spread--minimal .editorial-spread__content { align-items: flex-start; }
+
+  /* ── 05 asymmetric — bleeds one edge only, copy indented ──── */
+  .editorial-spread--asymmetric .editorial-spread__image-wrap {
+    margin-left: calc(-1 * var(--space-page));
+    margin-right: var(--space-lg);
+    aspect-ratio: 4 / 5;
+  }
+  .editorial-spread--asymmetric .editorial-spread__content {
+    padding-left: var(--space-md);
+    border-left: 1px solid var(--bite-border);
+  }
+
+  /* ── 06 type-behind — the word survives, clipped by the edge ── */
+  .editorial-spread--type-behind { position: relative; overflow: clip; }
+  .editorial-spread--type-behind .editorial-spread__backdrop {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    position: absolute;
+    top: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 27vw;
+    color: var(--bite-ivory-dark);
+    z-index: 0;
+  }
+  .editorial-spread--type-behind .editorial-spread__image-wrap {
+    position: relative;
+    z-index: 1;
+    width: 78%;
+    justify-self: end;
+    margin-right: calc(-1 * var(--space-page));
+    margin-top: var(--space-xl);
+  }
+  .editorial-spread--type-behind .editorial-spread__title { font-size: var(--type-display); }
+
+  /* ── 07 reverse — copy leads, picture answers ─────────────── */
+  .editorial-spread--reverse .editorial-spread__content    { grid-row: 1; }
+  .editorial-spread--reverse .editorial-spread__image-wrap {
+    grid-row: 2;
+    margin-left: calc(-1 * var(--space-page));
+    margin-right: calc(-1 * var(--space-page));
+    aspect-ratio: 5 / 4;
+  }
+}
+
+@media (max-width: 560px) {
+  .plate--triptych,
+  .plate--contact { grid-template-columns: repeat(2, 1fr); }
+  .plate--triptych .plate__item:nth-child(3),
+  .plate--contact  .plate__item:nth-child(3) { display: none; }
+  .plate__item--inset { width: 100%; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   BLEEDS
+   Ivory meeting burgundy as a hard edge reads as two websites
+   stacked. These gradients let one ground bleed into the next,
+   the way ink does on a press.
+   ═════════════════════════════════════════════════════════════ */
+
+.editorial-spread--full-bleed { position: relative; }
+
+.editorial-spread--full-bleed::before,
+.editorial-spread--full-bleed::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--space-2xl);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.editorial-spread--full-bleed::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bite-ivory) 0%, rgba(58, 10, 18, 0) 100%);
+}
+
+.editorial-spread--full-bleed::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bite-ivory) 0%, rgba(58, 10, 18, 0) 100%);
+}
+
+/* The bleed sits behind the page furniture, never over it. */
+.editorial-spread--full-bleed > * { position: relative; z-index: 1; }
+
+/* The closing spread runs into the collection plate, which is
+   cherry rather than ivory — match it. */
+#story-flash.editorial-spread--full-bleed::after {
+  background: linear-gradient(to top, var(--bite-cherry) 0%, rgba(58, 10, 18, 0) 100%);
+}

@@ -1,0 +1,449 @@
+/* store.css - Product grid and pages */
+
+/* ─────────────────────────────────────────────────────────────
+   Store header
+   ───────────────────────────────────────────────────────────── */
+
+.store {
+  background-color: var(--bite-ivory-light);
+  min-height: 100vh;
+}
+
+.store-header {
+  padding: calc(var(--nav-height) + var(--space-2xl)) var(--space-page) var(--space-xl);
+  border-bottom: 1px solid var(--bite-border);
+}
+
+.store-header__meta {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.store-header__title {
+  font-family: var(--font-display);
+  font-size: var(--type-hero);
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.025em;
+  margin-bottom: var(--space-sm);
+}
+
+.store-header__standfirst {
+  font-family: var(--font-editorial);
+  font-size: var(--type-subhead);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--bite-caption);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   The collection grid
+
+   Six columns. Most products take two (three across); the opening
+   pair and the closing run take three (two across). The rhythm is
+   editorial, but every card carries the same information in the
+   same order, so nothing is harder to compare than anything else.
+   ───────────────────────────────────────────────────────────── */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  column-gap: var(--space-md);
+  row-gap: var(--space-xl);
+  padding: var(--space-xl) var(--space-page) var(--space-3xl);
+}
+
+.product-grid__item { grid-column: span 2; }
+
+/* Open on two large plates. */
+.product-grid__item:nth-child(-n+2) { grid-column: span 3; }
+
+/* Close on large plates too, so the page doesn't taper away. */
+.product-grid__item:nth-child(n+6) { grid-column: span 3; }
+
+/* ─────────────────────────────────────────────────────────────
+   Product card
+   ───────────────────────────────────────────────────────────── */
+
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card__link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: inherit;
+}
+
+.product-card__image-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: var(--bite-ivory-dark);
+  margin-bottom: var(--space-sm);
+}
+
+/* The larger plates get a wider crop so the row reads as a spread
+   rather than as two stretched cards. */
+.product-grid__item:nth-child(-n+2) .product-card__image-wrap,
+.product-grid__item:nth-child(n+6) .product-card__image-wrap {
+  aspect-ratio: 4 / 3;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.035);
+}
+
+.product-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.product-card__name {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.product-card__shade {
+  font-family: var(--font-editorial);
+  font-size: var(--type-body);
+  font-style: italic;
+  color: var(--bite-caption);
+}
+
+.product-card__price {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 500;
+  margin-top: var(--space-xs);
+}
+
+/* Always present, never a hover-only secret — this has to work on
+   a phone, where there is no hover at all. */
+.product-card__add {
+  margin-top: var(--space-sm);
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--bite-black);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--bite-black);
+  border-radius: 0;
+  padding: 0.55em 0;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              letter-spacing var(--duration-normal) var(--ease-out);
+}
+
+.product-card__add:hover,
+.product-card__add:focus-visible {
+  color: var(--bite-cherry);
+  border-color: var(--bite-cherry);
+  letter-spacing: 0.2em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Product page
+   ───────────────────────────────────────────────────────────── */
+
+.product {
+  background-color: var(--bite-ivory-light);
+  padding-top: calc(var(--nav-height) + var(--space-lg));
+}
+
+.product__breadcrumb {
+  display: flex;
+  gap: var(--space-xs);
+  padding: 0 var(--space-page) var(--space-md);
+}
+
+.product__breadcrumb a:hover { color: var(--bite-cherry); }
+
+.product__main {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--space-xl);
+  padding: 0 var(--space-page) var(--space-3xl);
+  align-items: start;
+}
+
+/* ── Gallery ───────────────────────────────────────────────── */
+
+.product__stage {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--bite-ivory-dark);
+}
+
+.product__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product__thumbs {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.product__thumb {
+  width: 76px;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.product__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.product__thumb:hover { opacity: 0.85; }
+
+.product__thumb.is-active {
+  opacity: 1;
+  border-color: var(--bite-black);
+}
+
+/* ── Detail column ─────────────────────────────────────────── */
+
+.product__detail {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-md));
+  display: flex;
+  flex-direction: column;
+}
+
+.product__brand { margin-bottom: var(--space-sm); }
+
+.product__name {
+  font-family: var(--font-display);
+  font-size: var(--type-heading);
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-xs);
+}
+
+.product__shade {
+  font-family: var(--font-editorial);
+  font-size: var(--type-subhead);
+  font-style: italic;
+  color: var(--bite-burgundy);
+  margin-bottom: var(--space-sm);
+}
+
+.product__price {
+  font-family: var(--font-body);
+  font-size: var(--type-subhead);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+}
+
+.product__tagline {
+  color: var(--bite-caption);
+  margin-bottom: var(--space-lg);
+}
+
+/* ── Buy row ───────────────────────────────────────────────── */
+
+.product__buy {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.product__quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--bite-black);
+  flex-shrink: 0;
+}
+
+.product__qty-btn {
+  width: 3rem;
+  height: 3.25rem;
+  font-size: 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--bite-black);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.product__qty-btn:hover { background-color: var(--bite-ivory-dark); }
+
+.product__qty-value {
+  min-width: 2.5rem;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 500;
+}
+
+.product__add {
+  flex: 1;
+  height: 3.25rem;
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--bite-white);
+  background-color: var(--bite-black);
+  border: 1px solid var(--bite-black);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.product__add:hover {
+  background-color: var(--bite-cherry);
+  border-color: var(--bite-cherry);
+}
+
+.product__availability {
+  color: var(--bite-caption);
+  margin-bottom: var(--space-lg);
+}
+
+.product__accordion { margin-top: auto; }
+
+/* ── The story below the fold ──────────────────────────────── */
+
+.product__editorial {
+  background-color: var(--bite-ivory);
+  padding: var(--space-2xl) var(--space-page) var(--space-3xl);
+  border-top: 1px solid var(--bite-border);
+}
+
+.product__editorial-head { margin-bottom: var(--space-lg); }
+
+.product__editorial-title {
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  margin-top: var(--space-xs);
+}
+
+.product__sequence {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--bite-ivory-dark);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.product__sequence.is-ready { opacity: 1; }
+
+.product__stills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.product__stills img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.product__editorial-link {
+  font-family: var(--font-body);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.35em;
+  transition: color var(--duration-fast) var(--ease-out),
+              letter-spacing var(--duration-normal) var(--ease-out);
+}
+
+.product__editorial-link:hover {
+  color: var(--bite-cherry);
+  letter-spacing: 0.2em;
+}
+
+.product-missing {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-3xl) var(--space-page);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--space-lg);
+  }
+
+  /* Two across, all equal — comparison beats composition on a
+     narrow screen. */
+  .product-grid__item,
+  .product-grid__item:nth-child(-n+2),
+  .product-grid__item:nth-child(n+6) {
+    grid-column: span 1;
+  }
+
+  .product-grid__item:nth-child(-n+2) .product-card__image-wrap,
+  .product-grid__item:nth-child(n+6) .product-card__image-wrap {
+    aspect-ratio: 3 / 4;
+  }
+  
+  .product__main {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  /* Nothing to stick to once the columns stack. */
+  .product__detail { position: static; }
+
+  .product__stills { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding-left: var(--space-page);
+    padding-right: var(--space-page);
+  }
+}

@@ -1,0 +1,220 @@
+/* ─────────────────────────────────────────────────────────────
+   BITE — The Cover
+
+   One viewport, laid out as a 12-column grid so the type can sit
+   in the corners of the frame and leave the photograph's centre
+   (the model, the product) uncovered.
+   ───────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--bite-deep-red);
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% center;
+}
+
+/* Only enough shading to hold the type — the photograph keeps its
+   own contrast rather than sitting under a flat grey wash. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(26, 10, 14, 0.62) 0%, rgba(26, 10, 14, 0.22) 34%, rgba(26, 10, 14, 0) 62%),
+    linear-gradient(to top, rgba(26, 10, 14, 0.55) 0%, rgba(26, 10, 14, 0) 34%);
+}
+
+.hero__content {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto 1fr auto;
+  padding: calc(var(--nav-height) + var(--space-md)) var(--space-page) var(--space-lg);
+  color: var(--bite-white);
+}
+
+/* ── Masthead ──────────────────────────────────────────────── */
+
+.hero__masthead {
+  grid-column: 1 / 8;
+  grid-row: 1;
+  align-self: start;
+}
+
+.hero__brand {
+  font-family: var(--font-display);
+  font-size: clamp(88px, 15vw, 260px);
+  line-height: 0.78;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.hero__slogan {
+  font-family: var(--font-editorial);
+  font-size: clamp(20px, 2.6vw, 38px);
+  font-weight: 300;
+  line-height: 1.22;
+  letter-spacing: 0.005em;
+  max-width: 18ch;
+}
+
+.hero__slogan em {
+  font-style: italic;
+  /* The third line is the promise — let it carry the emphasis. */
+  color: var(--bite-white);
+}
+
+/* ── Corner metadata ───────────────────────────────────────── */
+
+.hero__issue {
+  grid-column: 11 / 13;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  color: rgba(254, 252, 249, 0.85);
+}
+
+.hero__place {
+  grid-column: 11 / 13;
+  grid-row: 3;
+  justify-self: end;
+  align-self: end;
+  color: rgba(254, 252, 249, 0.85);
+}
+
+/* ── Entry points ──────────────────────────────────────────── */
+
+.hero__actions {
+  grid-column: 1 / 8;
+  grid-row: 3;
+  align-self: end;
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* Editorial type in a rule, not a pill. On hover the block fills
+   with paper and the type goes dark — a printed-stock inversion. */
+.hero__action {
+  font-family: var(--font-body);
+  font-size: var(--type-small);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--bite-white);
+  border: 1px solid rgba(254, 252, 249, 0.55);
+  border-radius: 0;
+  padding: 1.05em 2.1em;
+  background-color: transparent;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.hero__action:hover,
+.hero__action:focus-visible {
+  background-color: var(--bite-ivory);
+  border-color: var(--bite-ivory);
+  color: var(--bite-black);
+}
+
+/* ── Scroll cue ────────────────────────────────────────────── */
+
+.hero__cue {
+  grid-column: 1 / 13;
+  grid-row: 3;
+  justify-self: center;
+  align-self: end;
+  padding: var(--space-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hero__cue-rule {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background-color: rgba(254, 252, 249, 0.5);
+  transform-origin: top;
+  animation: hero-cue 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes hero-cue {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.35; }
+  50%      { transform: scaleY(1);    opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue-rule { animation: none; transform: scaleY(1); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Mobile — the cover is re-composed, not shrunk.
+   The wordmark stays enormous; the actions go full width so they
+   are thumb-sized; the metadata pairs up on one line.
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero__image { object-position: 68% center; }
+
+  .hero__scrim {
+    background:
+      linear-gradient(to top, rgba(26, 10, 14, 0.78) 0%, rgba(26, 10, 14, 0.15) 45%, rgba(26, 10, 14, 0.35) 100%);
+  }
+
+  .hero__content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    padding: calc(var(--nav-height) + var(--space-sm)) var(--space-page) var(--space-md);
+  }
+
+  .hero__masthead { grid-column: 1; grid-row: 1; }
+
+  .hero__brand { font-size: clamp(76px, 24vw, 140px); }
+
+  .hero__slogan { font-size: clamp(18px, 5.2vw, 26px); }
+
+  .hero__issue {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: start;
+    align-self: end;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__place {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: end;
+    align-self: end;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__actions {
+    grid-column: 1;
+    grid-row: 4;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .hero__action {
+    text-align: center;
+    padding: 1.15em 1.5em;
+  }
+
+  /* No room for a cue once the actions are full width. */
+  .hero__cue { display: none; }
+}

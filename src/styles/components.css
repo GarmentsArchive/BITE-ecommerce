@@ -1,0 +1,295 @@
+/* components.css - BITE shared components */
+
+/* Buttons */
+.btn-editorial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid var(--bite-black);
+  background: transparent;
+  color: var(--bite-black);
+  font-family: var(--font-body);
+  font-size: var(--type-small, 12px);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.btn-editorial:hover {
+  background-color: var(--bite-black);
+  color: var(--bite-white);
+}
+
+.btn-editorial--light {
+  border-color: var(--bite-white);
+  color: var(--bite-white);
+}
+
+.btn-editorial--light:hover {
+  background-color: var(--bite-white);
+  color: var(--bite-black);
+}
+
+.btn-editorial--fill {
+  background-color: var(--bite-black);
+  color: var(--bite-white);
+}
+
+.btn-editorial--fill:hover {
+  background-color: var(--bite-cherry);
+  border-color: var(--bite-cherry);
+}
+
+/* Badges & Tags */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  background-color: var(--bite-cherry);
+  color: var(--bite-white);
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bite-caption);
+}
+
+/* Utilities */
+.img-lazy {
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.img-lazy.loaded {
+  opacity: 1;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dividers */
+.editorial-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--bite-border);
+  margin: var(--space-xl) 0;
+  position: relative;
+}
+
+.editorial-divider::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: var(--bite-black);
+  border-radius: 50%;
+}
+
+/* Forms & Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  padding: var(--space-sm) 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--bite-border);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  color: var(--bite-black);
+  border-radius: 0;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-bottom-color: var(--bite-black);
+}
+
+/* Quantity Controls */
+.qty-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--bite-border);
+}
+
+.qty-control__btn {
+  background: transparent;
+  border: none;
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-body);
+  cursor: pointer;
+  color: var(--bite-black);
+}
+
+.qty-control__btn:hover {
+  background-color: var(--bite-ivory-light);
+}
+
+.qty-control__value {
+  padding: 0 var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--type-small, 14px);
+  min-width: 2em;
+  text-align: center;
+}
+
+/* ── Navigation ────────────────────────────────────────────
+   Three states:
+     default        white type, no plate (over the cover image)
+     --plate        ivory plate + black type (scrolled, over paper)
+     --over-dark    white type, plate suppressed (over burgundy)
+   --over-dark wins, because legibility beats decoration.
+   ───────────────────────────────────────────────────────── */
+
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-nav);
+  /* Dark type is the safe default: most pages are ivory paper, and
+     a bar that starts white is invisible on them. Sections that
+     need light type opt in with data-nav-theme="light". */
+  color: var(--bite-black);
+  transition: background-color var(--duration-normal) var(--ease-out),
+              color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.main-nav__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--nav-height);
+  padding: 0 var(--space-page);
+}
+
+.main-nav__logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: inherit;
+}
+
+.main-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.main-nav__link,
+.main-nav__bag {
+  position: relative;
+  color: inherit;
+  letter-spacing: 0.14em;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.main-nav__link::after,
+.main-nav__bag::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--duration-normal) var(--ease-out);
+}
+
+.main-nav__link:hover::after,
+.main-nav__bag:hover::after,
+.main-nav__bag--filled::after {
+  width: 100%;
+}
+
+.main-nav--plate {
+  background-color: rgba(243, 238, 231, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--bite-black);
+  box-shadow: 0 1px 0 var(--bite-border);
+}
+
+/* A dark section is passing under the bar: light type, no plate. */
+.main-nav--over-dark,
+.main-nav--plate.main-nav--over-dark {
+  color: var(--bite-white);
+  background-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+@media (max-width: 768px) {
+  .main-nav__links { gap: var(--space-sm); }
+  .main-nav__logo { font-size: 1.3rem; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Touch targets
+
+   The editorial links and the card's add-to-bag are set as a word
+   over a rule — visually small on purpose. Rather than padding them
+   into buttons (which would break the typography), each gets an
+   invisible hit area that meets the 44px touch minimum.
+   ───────────────────────────────────────────────────────────── */
+
+.product-card__add,
+.editorial-spread__cta,
+.home-collection__all,
+.product__editorial-link {
+  position: relative;
+}
+
+.product-card__add::before,
+.editorial-spread__cta::before,
+.home-collection__all::before,
+.product__editorial-link::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+@media (pointer: coarse) {
+  .product-card__add::before,
+  .editorial-spread__cta::before,
+  .home-collection__all::before,
+  .product__editorial-link::before {
+    height: 48px;
+  }
+}

@@ -1,0 +1,86 @@
+:root {
+  /* ── Color System ── */
+  --bite-ivory:        #F3EEE7;
+  --bite-ivory-light:  #F8F5F0;
+  --bite-ivory-dark:   #E8E0D5;
+  --bite-burgundy:     #6B1D2A;
+  --bite-cherry:       #8B1A2B;
+  --bite-cherry-light: #A62038;
+  --bite-deep-red:     #3A0A12;
+  --bite-black:        #1A1A1A;
+  --bite-black-soft:   #2A2420;
+  --bite-white:        #FEFCF9;
+  --bite-caption:      #8A7E74;
+  --bite-caption-light:#B0A89E;
+  --bite-border:       #D5CEC5;
+  --bite-border-light: #E8E2DA;
+  --bite-overlay:      rgba(26, 26, 26, 0.6);
+
+  /* ── Typography ── */
+  --font-display:   'Anton', sans-serif;
+  --font-editorial: 'Cormorant Garamond', serif;
+  --font-body:      'Inter', sans-serif;
+
+  /* ── Type Scale ── */
+  --type-hero:     clamp(72px, 12vw, 180px);
+  --type-display:  clamp(44px, 6vw, 96px);
+  --type-heading:  clamp(28px, 3.5vw, 56px);
+  --type-subhead:  clamp(18px, 2vw, 28px);
+  --type-body:     clamp(14px, 1.1vw, 17px);
+  --type-small:    clamp(12px, 1vw, 14px);
+  --type-caption:  clamp(10px, 0.8vw, 12px);
+  --type-number:   clamp(56px, 8vw, 140px);
+  --type-meta:     clamp(9px, 0.7vw, 11px);
+
+  /* ── Spacing ── */
+  --space-xs:   clamp(4px, 0.5vw, 8px);
+  --space-sm:   clamp(8px, 1vw, 16px);
+  --space-md:   clamp(16px, 2vw, 32px);
+  --space-lg:   clamp(32px, 4vw, 64px);
+  --space-xl:   clamp(48px, 6vw, 96px);
+  --space-2xl:  clamp(64px, 8vw, 128px);
+  --space-3xl:  clamp(96px, 12vw, 192px);
+  --space-page: clamp(16px, 4vw, 80px);
+
+  /* ── Layout ── */
+  --max-width:  1440px;
+  --max-narrow: 900px;
+  --nav-height: 56px;
+
+  /* ── Motion ── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:   0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow:   0.7s;
+
+  /* ── Z-Index ── */
+  --z-base:     1;
+  --z-sticky:   10;
+  --z-nav:      100;
+  --z-overlay:  200;
+  --z-modal:    300;
+  --z-cart:     250;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  color: var(--bite-black);
+  background-color: var(--bite-ivory);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--bite-cherry);
+  color: var(--bite-white);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bite-ivory); }
+::-webkit-scrollbar-thumb { background: var(--bite-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bite-caption); }
